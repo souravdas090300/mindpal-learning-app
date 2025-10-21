@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation'
 import { apiClient } from '@/lib/api'
 import ReactMarkdown from 'react-markdown'
 import { formatDistanceToNow } from 'date-fns'
+import VoiceInput from '@/components/VoiceInput'
+import ExportButton from '@/components/ExportButton'
+import AIModelSelector from '@/components/AIModelSelector'
+import ShareModal from '@/components/ShareModal'
 
 interface Document {
   id: string
@@ -37,10 +41,18 @@ export default function DashboardPage() {
   const [aiStatus, setAiStatus] = useState('')
   const [streamingSummary, setStreamingSummary] = useState('')
   const [streamingFlashcards, setStreamingFlashcards] = useState<Array<{question: string; answer: string}>>([])
-  const [currentDocId, setCurrentDocId] = useState<string | null>(null)
+  // const [currentDocId, setCurrentDocId] = useState<string | null>(null) // Unused for now
+  
+  // AI Model Selection states
+  const [selectedProvider, setSelectedProvider] = useState('gemini')
+  const [selectedModel, setSelectedModel] = useState<string>()
   
   // Flashcard study mode states
   const [studyingDoc, setStudyingDoc] = useState<Document | null>(null)
+  
+  // Sharing states
+  const [showShareModal, setShowShareModal] = useState(false)
+  const [docToShare, setDocToShare] = useState<Document | null>(null)
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [showAnswer, setShowAnswer] = useState(false)
 
@@ -72,17 +84,18 @@ export default function DashboardPage() {
     }
   }
 
-  const createDocument = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      await apiClient.createDocument(newDoc.title, newDoc.content)
-      setNewDoc({ title: '', content: '' })
-      setShowNewDoc(false)
-      fetchDocuments()
-    } catch (error) {
-      console.error('Failed to create document:', error)
-    }
-  }
+  // Simple document creation (unused - using streaming version)
+  // const createDocument = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   try {
+  //     await apiClient.createDocument(newDoc.title, newDoc.content)
+  //     setNewDoc({ title: '', content: '' })
+  //     setShowNewDoc(false)
+  //     fetchDocuments()
+  //   } catch (error) {
+  //     console.error('Failed to create document:', error)
+  //   }
+  // }
 
   const createDocumentWithStreaming = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -102,7 +115,9 @@ export default function DashboardPage() {
         },
         body: JSON.stringify({
           title: newDoc.title,
-          content: newDoc.content
+          content: newDoc.content,
+          provider: selectedProvider,
+          model: selectedModel
         })
       })
 
@@ -137,7 +152,7 @@ export default function DashboardPage() {
 
             switch (event) {
               case 'document-created':
-                setCurrentDocId(data.documentId)
+                // setCurrentDocId(data.documentId) // Track document ID if needed
                 setAiStatus('✅ Document created! Generating AI summary...')
                 break
 
@@ -181,7 +196,7 @@ export default function DashboardPage() {
                   setNewDoc({ title: '', content: '' })
                   setStreamingSummary('')
                   setStreamingFlashcards([])
-                  setCurrentDocId(null)
+                  // setCurrentDocId(null) // Reset document ID if needed
                   fetchDocuments()
                 }, 2000)
                 break
@@ -299,6 +314,27 @@ export default function DashboardPage() {
             MindPal Dashboard
           </h1>
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.push('/analytics')}
+              className="px-4 py-2 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg font-semibold hover:opacity-90 transition"
+              title="View Analytics"
+            >
+              📊 Analytics
+            </button>
+            <button
+              onClick={() => router.push('/dashboard/review')}
+              className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:opacity-90 transition"
+              title="Review Flashcards"
+            >
+              🎴 Review
+            </button>
+            <button
+              onClick={() => router.push('/shared')}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg font-semibold hover:opacity-90 transition"
+              title="View Shared Documents"
+            >
+              👥 Shared
+            </button>
             <span className="text-gray-700">👋 {user?.name || user?.email}</span>
             <button
               onClick={logout}
@@ -330,6 +366,16 @@ export default function DashboardPage() {
               
               {!isCreatingWithAI ? (
                 <form onSubmit={createDocumentWithStreaming} className="space-y-4">
+                  {/* AI Model Selector */}
+                  <div className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border-2 border-purple-200">
+                    <AIModelSelector
+                      selectedProvider={selectedProvider}
+                      selectedModel={selectedModel}
+                      onProviderChange={setSelectedProvider}
+                      onModelChange={setSelectedModel}
+                    />
+                  </div>
+                  
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Title
@@ -354,6 +400,15 @@ export default function DashboardPage() {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent h-64"
                       placeholder="Write your content here... AI will generate summary and flashcards in real-time!"
                     />
+                    
+                    {/* Voice Input Component */}
+                    <div className="mt-3">
+                      <VoiceInput
+                        onTranscriptChange={(transcript) => setNewDoc({ ...newDoc, content: newDoc.content + ' ' + transcript })}
+                        currentValue={newDoc.content}
+                        mode="append"
+                      />
+                    </div>
                   </div>
                   <div className="flex gap-4">
                     <button
@@ -447,6 +502,16 @@ export default function DashboardPage() {
                       ✏️
                     </button>
                     <button
+                      onClick={() => {
+                        setDocToShare(doc);
+                        setShowShareModal(true);
+                      }}
+                      className="text-purple-500 hover:text-purple-700 text-xl"
+                      title="Share"
+                    >
+                      🔗
+                    </button>
+                    <button
                       onClick={() => deleteDocument(doc.id)}
                       className="text-red-500 hover:text-red-700 text-xl"
                       title="Delete"
@@ -454,6 +519,11 @@ export default function DashboardPage() {
                       🗑️
                     </button>
                   </div>
+                </div>
+                
+                {/* Export Button */}
+                <div className="mb-3">
+                  <ExportButton document={doc} showFlashcards={!!doc.flashcards?.length} />
                 </div>
                 
                 {doc.summary && (
@@ -492,12 +562,15 @@ export default function DashboardPage() {
             <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">{selectedDoc.title}</h2>
-                <button
-                  onClick={() => setSelectedDoc(null)}
-                  className="text-gray-500 hover:text-gray-700 text-2xl"
-                >
-                  ✕
-                </button>
+                <div className="flex items-center gap-3">
+                  <ExportButton document={selectedDoc} showFlashcards={true} />
+                  <button
+                    onClick={() => setSelectedDoc(null)}
+                    className="text-gray-500 hover:text-gray-700 text-2xl"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
               
               <div className="p-6 space-y-6">
@@ -708,6 +781,18 @@ export default function DashboardPage() {
           </div>
         )}
       </main>
+      
+      {/* Share Modal */}
+      {docToShare && (
+        <ShareModal
+          document={{ id: docToShare.id, title: docToShare.title }}
+          isOpen={showShareModal}
+          onClose={() => {
+            setShowShareModal(false);
+            setDocToShare(null);
+          }}
+        />
+      )}
     </div>
   )
 }

@@ -614,14 +614,14 @@ If you find MindPal useful, please consider:
 - [x] Automatic flashcard generation
 - [x] Real-time content streaming
 - [x] Interactive study mode
-- [ ] Spaced repetition algorithm (SM-2)
-- [ ] Progress tracking & analytics
-- [ ] Document sharing & collaboration
-- [ ] Mobile app (React Native)
-- [ ] Voice input (Speech-to-Text)
-- [ ] Export to PDF/Markdown
-- [ ] Offline mode (PWA)
-- [ ] Multiple AI models support
+- [x] Spaced repetition algorithm (SM-2)
+- [x] Progress tracking & analytics
+- [x] Document sharing & collaboration
+- [x] Voice input (Speech-to-Text)
+- [x] Export to PDF/Markdown
+- [x] Multiple AI models support
+- [x] Offline mode (PWA)
+- [x] Mobile app (React Native)
 
 ---
 

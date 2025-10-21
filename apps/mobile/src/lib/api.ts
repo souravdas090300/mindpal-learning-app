@@ -28,6 +28,10 @@ class ApiClient {
     return !!this.token;
   }
 
+  getBaseUrl(): string {
+    return API_URL;
+  }
+
   async setToken(token: string) {
     this.token = token;
     await AsyncStorage.setItem('mindpal_token', token);
@@ -93,6 +97,10 @@ class ApiClient {
     return response;
   }
 
+  async signup(email: string, password: string, name: string): Promise<AuthResponse> {
+    return this.register(email, password, name);
+  }
+
   async logout() {
     await this.clearToken();
   }
@@ -141,6 +149,28 @@ class ApiClient {
       body: JSON.stringify({ quality }),
     });
   }
+
+  // Analytics endpoints
+  async getAnalyticsOverview(): Promise<{
+    totalDocuments: number;
+    totalFlashcards: number;
+    totalReviews: number;
+    studyTimeMinutes: number;
+    currentStreak: number;
+    longestStreak: number;
+    masteredCards: number;
+    averageQuality: number;
+  }> {
+    return this.request('/analytics/overview');
+  }
+
+  async getStudyStreak(): Promise<{
+    currentStreak: number;
+    longestStreak: number;
+  }> {
+    return this.request('/analytics/streak');
+  }
 }
 
 export const api = new ApiClient();
+export const apiClient = api; // Alias for compatibility

@@ -23,11 +23,17 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import passport from './lib/passport';
 import authRoutes from './routes/auth';
 import documentRoutes from './routes/documents';
 import documentStreamRoutes from './routes/documents-stream';
 import flashcardRoutes from './routes/flashcards';
+import reviewRoutes from './routes/reviews';
 import testAIRoutes from './routes/test-ai';
+import aiProviderRoutes from './routes/ai-providers';
+import analyticsRoutes from './routes/analytics';
+import sharingRoutes from './routes/sharing';
+import googleAuthRoutes from './routes/google-auth';
 import { prisma } from './lib/prisma';
 
 // Load environment variables from .env file
@@ -115,6 +121,11 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 
 /**
+ * Initialize Passport.js for authentication
+ */
+app.use(passport.initialize());
+
+/**
  * Request logging middleware
  * Logs all incoming requests with method, path, and truncated body
  * Useful for debugging and monitoring API usage
@@ -177,8 +188,12 @@ app.get('/api/test', (req, res) => {
  * Authentication Routes (/api/auth)
  * - POST /signup - Register new user
  * - POST /login - Authenticate user
+ * - GET /google - Initiate Google OAuth
+ * - GET /google/callback - Google OAuth callback
+ * - GET /google/url - Get Google OAuth URL for mobile
  */
 app.use('/api/auth', authRoutes);
+app.use('/api/auth', googleAuthRoutes);
 
 /**
  * Document Routes (/api/documents)
@@ -198,10 +213,53 @@ app.use('/api/documents', documentRoutes);
 app.use('/api/documents-stream', documentStreamRoutes);
 
 /**
+ * Review Routes (/api/reviews)
+ * - GET /due - Get flashcards due for review
+ * - POST /:flashcardId - Submit a review with quality rating
+ * - GET /stats - Get user's review statistics
+ * - GET /history - Get review history
+ * Implements SM-2 spaced repetition algorithm
+ */
+app.use('/api/reviews', reviewRoutes);
+
+/**
  * Flashcard Routes (/api/flashcards)
  * - GET /document/:documentId - Get flashcards for a document
  */
 app.use('/api/flashcards', flashcardRoutes);
+
+/**
+ * AI Provider Routes (/api/ai-providers)
+ * - GET / - Get list of available AI providers
+ * - GET /test/:provider - Test a specific provider
+ */
+app.use('/api/ai-providers', aiProviderRoutes);
+
+/**
+ * Analytics Routes (/api/analytics)
+ * - GET /overview - Overall statistics
+ * - GET /study-time - Study time by day
+ * - GET /mastery-progress - Mastery level distribution
+ * - GET /activity-heatmap - Activity heatmap data
+ * - GET /performance - Performance metrics
+ * - GET /streak - Streak information
+ */
+app.use('/api/analytics', analyticsRoutes);
+
+/**
+ * Sharing Routes (/api/sharing)
+ * - POST /share - Share document with user
+ * - GET /document/:documentId - Get shares for document
+ * - DELETE /:shareId - Remove share
+ * - PUT /:shareId/permission - Update permission
+ * - GET /shared-with-me - Get documents shared with me
+ * - POST /link - Generate shareable link
+ * - GET /links/:documentId - Get share links for document
+ * - DELETE /link/:linkId - Deactivate share link
+ * - GET /public/:token - Access document via share link (no auth)
+ */
+app.use('/api/sharing', sharingRoutes);
+
 app.use('/api/test-ai', testAIRoutes);
 
 // 404 handler

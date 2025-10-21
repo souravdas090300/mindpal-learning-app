@@ -22,6 +22,37 @@ interface Flashcard {
   documentId: string;
 }
 
+interface ShareUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface DocumentShare {
+  id: string;
+  document_id: string;
+  owner_id: string;
+  shared_with_user_id: string;
+  permission: 'view' | 'edit';
+  shared_at: string;
+  updated_at: string;
+  user: ShareUser;
+}
+
+interface ShareLink {
+  id: string;
+  document_id: string;
+  owner_id: string;
+  share_token: string;
+  permission: 'view' | 'edit';
+  expires_at: string | null;
+  created_at: string;
+  last_accessed_at: string | null;
+  access_count: number;
+  is_active: boolean;
+  url: string;
+}
+
 class ApiClient {
   private token: string | null = null;
 
@@ -142,6 +173,72 @@ class ApiClient {
   async getFlashcards(documentId: string): Promise<Flashcard[]> {
     const data = await this.request(`/api/flashcards/${documentId}`);
     return data.flashcards;
+  }
+
+  async getAIProviders(): Promise<Array<{ id: string; name: string; models: string[]; requiresKey: boolean }>> {
+    const data = await this.request('/api/ai-providers');
+    return data;
+  }
+
+  async testAIProvider(provider: string, model?: string): Promise<{ success: boolean; provider: string; model: string; responseTime: number; testOutput: string }> {
+    const url = model ? `/api/ai-providers/test/${provider}?model=${model}` : `/api/ai-providers/test/${provider}`;
+    return await this.request(url);
+  }
+
+  // ============================================================================
+  // SHARING API
+  // ============================================================================
+
+  async shareDocument(documentId: string, userEmail: string, permission: 'view' | 'edit'): Promise<{ success: boolean; share: DocumentShare }> {
+    const data = await this.request('/api/sharing/share', {
+      method: 'POST',
+      body: JSON.stringify({ documentId, userEmail, permission }),
+    });
+    return data;
+  }
+
+  async getSharedWith(documentId: string): Promise<DocumentShare[]> {
+    return await this.request(`/api/sharing/document/${documentId}`);
+  }
+
+  async updateSharePermission(shareId: string, permission: 'view' | 'edit'): Promise<DocumentShare> {
+    const data = await this.request(`/api/sharing/${shareId}/permission`, {
+      method: 'PUT',
+      body: JSON.stringify({ permission }),
+    });
+    return data;
+  }
+
+  async revokeShare(shareId: string): Promise<void> {
+    await this.request(`/api/sharing/${shareId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getSharedWithMe(): Promise<Array<Document & { sharedBy: ShareUser; permission: string; sharedAt: string }>> {
+    return await this.request('/api/sharing/shared-with-me');
+  }
+
+  async generateShareLink(documentId: string, permission: 'view' | 'edit', expiresInDays?: number): Promise<{ success: boolean; link: ShareLink; url: string }> {
+    const data = await this.request('/api/sharing/link', {
+      method: 'POST',
+      body: JSON.stringify({ documentId, permission, expiresInDays }),
+    });
+    return data;
+  }
+
+  async getShareLinks(documentId: string): Promise<ShareLink[]> {
+    return await this.request(`/api/sharing/links/${documentId}`);
+  }
+
+  async deactivateShareLink(linkId: string): Promise<void> {
+    await this.request(`/api/sharing/link/${linkId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async accessDocumentByToken(token: string): Promise<{ document: Document; permission: string; sharedAt: string }> {
+    return await this.request(`/api/sharing/public/${token}`);
   }
 }
 

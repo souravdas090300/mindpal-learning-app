@@ -14,10 +14,19 @@
     "build": "npm run build:web && npm run build:api",
     "build:web": "cd apps/web && npm run build",
     "build:api": "cd apps/api && npm run build",
-    "test": "echo \"Run tests in individual apps\"",
+    "test": "npm run test:api && npm run test:web",
+    "test:api": "cd apps/api && npm test",
+    "test:web": "cd apps/web && npm test",
+    "test:watch": "concurrently \"npm run test:api:watch\" \"npm run test:web:watch\"",
+    "test:api:watch": "cd apps/api && npm run test:watch",
+    "test:web:watch": "cd apps/web && npm run test:watch",
+    "test:coverage": "npm run test:api:coverage && npm run test:web:coverage",
+    "test:api:coverage": "cd apps/api && npm test -- --coverage",
+    "test:web:coverage": "cd apps/web && npm test -- --coverage",
     "deploy:setup": "npm run build && echo \"Ready for deployment\""
   },
   "devDependencies": {
+    "@types/node-forge": "^1.3.14",
     "concurrently": "^7.6.0"
   }
 }

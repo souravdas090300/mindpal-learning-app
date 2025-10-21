@@ -9,10 +9,12 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { api } from '../lib/api';
+import GoogleSignInButton from '../components/GoogleSignInButton';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -53,17 +55,40 @@ export default function LoginScreen({ navigation }: Props) {
     }
   };
 
+  const handleGoogleSuccess = (data: { token: string; user: { id: string; email: string; name?: string } }) => {
+    Alert.alert('Success', `Welcome ${data.user.name}!`);
+    navigation.replace('Home');
+  };
+
+  const handleGoogleError = (error: string) => {
+    Alert.alert('Google Sign In Failed', error);
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View style={styles.content}>
-        <Text style={styles.logo}>🧠</Text>
-        <Text style={styles.title}>MindPal</Text>
-        <Text style={styles.subtitle}>AI-Powered Learning Companion</Text>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.content}>
+          <Text style={styles.logo}>🧠</Text>
+          <Text style={styles.title}>MindPal</Text>
+          <Text style={styles.subtitle}>AI-Powered Learning Companion</Text>
 
-        {isRegister && (
+          {/* Google Sign In */}
+          <GoogleSignInButton 
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+          />
+
+          {/* Divider */}
+          <View style={styles.divider}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>Or continue with email</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          {isRegister && (
           <TextInput
             style={styles.input}
             placeholder="Name"
@@ -113,7 +138,8 @@ export default function LoginScreen({ navigation }: Props) {
             {isRegister ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
           </Text>
         </TouchableOpacity>
-      </View>
+        </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
@@ -123,10 +149,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
+  scrollContent: {
+    flexGrow: 1,
+  },
   content: {
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+  },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 24,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ddd',
+  },
+  dividerText: {
+    marginHorizontal: 16,
+    color: '#666',
+    fontSize: 14,
   },
   logo: {
     fontSize: 64,

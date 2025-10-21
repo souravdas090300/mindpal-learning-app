@@ -45,8 +45,19 @@ export interface ApiError {
 // Navigation types
 export type RootStackParamList = {
   Login: undefined;
+  Signup: undefined;
+  Main: undefined;
   Home: undefined;
   CreateDocument: undefined;
   DocumentDetail: { documentId: string };
   Review: undefined;
+};
+
+// Bottom Tab Navigation types
+export type TabParamList = {
+  HomeTab: undefined;
+  ReviewTab: undefined;
+  AnalyticsTab: undefined;
+  SharedTab: undefined;
+  ProfileTab: undefined;
 };
