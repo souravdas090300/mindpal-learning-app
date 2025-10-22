@@ -7,19 +7,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 export default function AuthError() {
-  const searchParams = useSearchParams();
   const [message, setMessage] = useState('Authentication failed');
 
   useEffect(() => {
-    const errorMessage = searchParams.get('message');
+    const params = new URLSearchParams(window.location.search);
+    const errorMessage = params.get('message');
     if (errorMessage) {
       setMessage(decodeURIComponent(errorMessage));
     }
-  }, [searchParams]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-100 flex items-center justify-center p-4">

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import PWAManager from "@/components/PWAManager";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
+import SvgViewBoxSanitizer from "@/components/SvgViewBoxSanitizer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,6 +61,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Defensive fix for any SVGs with malformed viewBox values injected at runtime */}
+        <SvgViewBoxSanitizer />
         <PWAManager />
         <PWAInstallPrompt />
         {children}

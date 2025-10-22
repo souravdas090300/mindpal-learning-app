@@ -7,21 +7,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function AuthSuccess() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const [message, setMessage] = useState('Processing your login...');
 
   useEffect(() => {
-    const token = searchParams.get('token');
-    
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+
     if (token) {
       // Store token in localStorage
       localStorage.setItem('token', token);
       setMessage('Login successful! Redirecting...');
-      
+
       // Redirect to dashboard after 1 second
       setTimeout(() => {
         router.push('/dashboard');
@@ -32,7 +32,7 @@ export default function AuthSuccess() {
         router.push('/');
       }, 3000);
     }
-  }, [searchParams, router]);
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
