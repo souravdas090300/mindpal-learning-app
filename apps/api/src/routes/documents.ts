@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { supabase } from '../lib/supabase';
 import { authenticateToken, AuthRequest } from '../lib/auth';
 import { generateSummary, generateFlashcards } from '../lib/ai';
+import { storeDocumentVector, searchSimilarDocuments, updateDocumentVector, deleteDocumentVector } from '../lib/pinecone';
 import cuid from 'cuid';
 
 const router = Router();
@@ -30,6 +31,56 @@ router.get('/', async (req: AuthRequest, res) => {
   } catch (error) {
     console.error('Error fetching documents:', error);
     res.status(500).json({ error: 'Failed to fetch documents' });
+  }
+});
+
+// Search documents using semantic similarity (MUST be before /:id route)
+router.get('/search', async (req: AuthRequest, res) => {
+  try {
+    const { query } = req.query;
+    const userId = req.user?.userId;
+
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({ error: 'Query parameter is required' });
+    }
+
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    // Search for similar documents using Pinecone
+    const vectorResults = await searchSimilarDocuments(query, userId);
+
+    if (vectorResults.length === 0) {
+      return res.json({ results: [] });
+    }
+
+    // Fetch full document details from database
+    const documentIds = vectorResults.map((r) => r.documentId).filter(Boolean);
+    const { data: documents, error: dbError } = await supabase
+      .from('documents')
+      .select(`
+        *,
+        flashcards (*)
+      `)
+      .in('id', documentIds)
+      .eq('userId', userId);
+
+    if (dbError) throw dbError;
+
+    // Combine vector results with full document data
+    const enhancedResults = vectorResults.map((vectorResult) => {
+      const fullDocument = documents?.find((doc) => doc.id === vectorResult.documentId);
+      return {
+        ...vectorResult,
+        document: fullDocument,
+      };
+    });
+
+    res.json({ results: enhancedResults });
+  } catch (error) {
+    console.error('Search error:', error);
+    res.status(500).json({ error: 'Search failed' });
   }
 });
 
@@ -126,6 +177,10 @@ router.post('/', async (req: AuthRequest, res) => {
         document.flashcards = flashcards;
       }
     }
+
+    // Store document vector in Pinecone (async, don't block response)
+    storeDocumentVector(document.id, userId, content, title)
+      .catch((error) => console.error('Vector storage error:', error));
 
     res.status(201).json(document);
   } catch (error) {
@@ -227,6 +282,12 @@ router.put('/:id', async (req: AuthRequest, res) => {
 
     if (fetchError) throw fetchError;
 
+    // Update vector in Pinecone if content changed (async, don't block response)
+    if (contentChanged) {
+      updateDocumentVector(id, userId!, content, title || existingDocument.title)
+        .catch((error) => console.error('Vector update error:', error));
+    }
+
     res.json({ document: updatedDocument });
   } catch (error) {
     console.error('Error updating document:', error);
@@ -265,6 +326,10 @@ router.delete('/:id', async (req: AuthRequest, res) => {
       .eq('id', id);
 
     if (deleteError) throw deleteError;
+
+    // Delete vector from Pinecone (async, don't block response)
+    deleteDocumentVector(id)
+      .catch((error) => console.error('Vector deletion error:', error));
 
     res.json({ message: 'Document deleted successfully' });
   } catch (error) {
