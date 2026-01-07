@@ -34,7 +34,8 @@ Perfect for students, educators, professionals, and teams who want collaborative
 ### Prerequisites
 - Node.js 18+ 
 - Supabase account
-- Railway/Vercel account
+- Render account (backend hosting)
+- Vercel account (frontend hosting)
 - AI provider API keys (Gemini/OpenAI/Claude)
 
 ### Step 1: Database Setup
@@ -43,29 +44,53 @@ Perfect for students, educators, professionals, and teams who want collaborative
 # File: database/SIMPLE_MIGRATION.sql
 ```
 
-### Step 2: Deploy Backend (Railway)
-```bash
-cd apps/api
-# Set environment variables in Railway dashboard
-npm install
-npm run build
-npm start
-```
+### Step 2: Deploy Backend (Render)
+1. Go to **[render.com](https://render.com)** → Sign up with GitHub
+2. New → **Web Service**
+3. Connect repository: `mindpal-learning-app`
+4. Configure:
+   - **Name**: mindpal-api
+   - **Root Directory**: `apps/api`
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+5. Add **Environment Variables** (see below)
+6. Click **Create Web Service**
 
 ### Step 3: Deploy Frontend (Vercel)
-```bash
-cd apps/web
-# Set environment variables in Vercel dashboard
-npm install
-npm run build
-```
+1. Go to **[vercel.com](https://vercel.com)** → Sign up with GitHub
+2. **Import Project** → Select `mindpal-learning-app`
+3. Configure:
+   - **Framework**: Next.js
+   - **Root Directory**: `apps/web`
+4. Add Environment Variable:
+   - `NEXT_PUBLIC_API_URL`: Your Render backend URL
+5. Click **Deploy**
 
 ### 📚 Complete Guide
-For detailed deployment instructions, see:
-- **[Production Deployment Guide](./PRODUCTION_DEPLOYMENT_GUIDE.md)** — Complete setup (400+ lines)
-- **[Deployment Checklist](./DEPLOYMENT_CHECKLIST.md)** — Step-by-step verification
-- **[Deployment Status Report](./DEPLOYMENT_STATUS_REPORT.md)** — Current readiness analysis
-- **[Test Results](./TEST_RESULTS.md)** — All 78 tests passing
+**Render Backend Environment Variables:**
+```env
+DATABASE_URL=postgresql://postgres:PASSWORD@db.PROJECT.supabase.co:5432/postgres
+SUPABASE_URL=https://PROJECT.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+JWT_SECRET=your-strong-random-secret
+GOOGLE_API_KEY=your-gemini-api-key
+OPENAI_API_KEY=your-openai-key (optional)
+ANTHROPIC_API_KEY=your-claude-key (optional)
+GOOGLE_CLIENT_ID=your-google-oauth-id
+GOOGLE_CLIENT_SECRET=your-google-oauth-secret
+NODE_ENV=production
+PORT=3001
+```
+
+**Vercel Frontend Environment Variables:**
+```env
+NEXT_PUBLIC_API_URL=https://your-app.onrender.com
+NEXT_PUBLIC_SUPABASE_URL=https://PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+For detailed deployment instructions, see your local files (not yet committed).
 
 ### 📊 Deployment Readiness: 79% (15/19 Ready)
 
