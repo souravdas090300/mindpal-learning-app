@@ -10,20 +10,18 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.up.railway.app',
-      },
-      {
-        protocol: 'https',
         hostname: '**.vercel.app',
       },
       {
         protocol: 'https',
         hostname: '**.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: '**.onrender.com',
+      },
     ],
   },
-  // Enable standalone output for optimal Docker/serverless deployment
-  output: 'standalone',
 };
 
 export default nextConfig;
