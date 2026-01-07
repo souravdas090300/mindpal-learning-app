@@ -13,7 +13,7 @@
 import { Router, Request, Response } from "express";
 import { supabase } from "../lib/supabase";
 import { authenticateToken, AuthRequest } from "../lib/auth";
-import cuid from "cuid";
+import { createId } from "@paralleldrive/cuid2";
 
 const router = Router();
 
@@ -69,7 +69,7 @@ router.post("/share", async (req: AuthRequest, res: Response) => {
     }
 
     // Create or update share
-    const shareId = cuid();
+    const shareId = createId();
     const { data: share, error } = await supabase
       .from("document_shares")
       .upsert({
@@ -314,8 +314,8 @@ router.post("/link", async (req: AuthRequest, res: Response) => {
     }
 
     // Generate unique token
-    const shareToken = cuid();
-    const linkId = cuid();
+    const shareToken = createId();
+    const linkId = createId();
 
     // Calculate expiration
     let expiresAt = null;

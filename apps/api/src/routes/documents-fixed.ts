@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { supabase } from '../lib/supabase';
 import { authenticateToken, AuthRequest } from '../lib/auth';
 import { generateSummary, generateFlashcards } from '../lib/ai';
-import cuid from 'cuid';
+import { createId } from '@paralleldrive/cuid2';
 
 const router = Router();
 
@@ -81,7 +81,7 @@ router.post('/', async (req: AuthRequest, res) => {
     ]);
 
     // Generate unique IDs
-    const documentId = cuid();
+    const documentId = createId();
 
     // Create document
     const { data: document, error: docError } = await supabase
@@ -101,7 +101,7 @@ router.post('/', async (req: AuthRequest, res) => {
     // Create flashcards
     if (flashcardData.length > 0) {
       const flashcardsToInsert = flashcardData.map((fc) => ({
-        id: cuid(),  // Generate ID for each flashcard
+        id: createId(),  // Generate ID for each flashcard
         documentId: document.id,
         question: fc.question,
         answer: fc.answer,

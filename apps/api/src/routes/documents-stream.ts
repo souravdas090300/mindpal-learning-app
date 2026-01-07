@@ -27,7 +27,7 @@ import { Router } from 'express';
 import { authenticateToken, AuthRequest } from '../lib/auth';
 import { generateSummaryStream, generateFlashcards } from '../lib/ai';
 import { supabase } from '../lib/supabase';
-import cuid from 'cuid';
+import { createId } from '@paralleldrive/cuid2';
 
 const router = Router();
 
@@ -84,7 +84,7 @@ router.post('/stream', async (req: AuthRequest, res) => {
      * Create the document record first with a unique ID,
      * then generate AI content asynchronously
      */
-    const documentId = cuid();
+    const documentId = createId();
     
     const { data: document, error: docError } = await supabase
       .from('documents')
@@ -158,7 +158,7 @@ router.post('/stream', async (req: AuthRequest, res) => {
       
       if (flashcardData && flashcardData.length > 0) {
         const flashcardsToInsert = flashcardData.map((fc: { question: string; answer: string }) => ({
-          id: cuid(),
+          id: createId(),
           documentId: documentId,
           question: fc.question,
           answer: fc.answer,

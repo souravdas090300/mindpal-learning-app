@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { supabase } from '../lib/supabase';
 import { hashPassword, comparePassword, generateToken } from '../lib/auth';
-import cuid from 'cuid';
+import { createId } from '@paralleldrive/cuid2';
 
 const router = Router();
 
@@ -30,7 +30,7 @@ const signupHandler = async (req: any, res: any) => {
     const hashedPassword = await hashPassword(password);
 
     // Generate unique ID
-    const userId = cuid();
+    const userId = createId();
 
     // Create user
     const { data: user, error } = await supabase

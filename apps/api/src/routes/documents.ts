@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import { authenticateToken, AuthRequest } from '../lib/auth';
 import { generateSummary, generateFlashcards } from '../lib/ai';
 import { storeDocumentVector, searchSimilarDocuments, updateDocumentVector, deleteDocumentVector } from '../lib/pinecone';
-import cuid from 'cuid';
+import { createId } from '@paralleldrive/cuid2';
 
 const router = Router();
 
@@ -140,7 +140,7 @@ router.post('/', async (req: AuthRequest, res) => {
     }
 
     // Generate unique IDs
-    const documentId = cuid();
+    const documentId = createId();
 
     // Create document
     const { data: document, error: docError } = await supabase
@@ -160,7 +160,7 @@ router.post('/', async (req: AuthRequest, res) => {
     // Create flashcards
     if (flashcardData.length > 0) {
       const flashcardsToInsert = flashcardData.map((fc) => ({
-        id: cuid(),  // Generate ID for each flashcard
+        id: createId(),  // Generate ID for each flashcard
         documentId: document.id,
         question: fc.question,
         answer: fc.answer,
@@ -254,7 +254,7 @@ router.put('/:id', async (req: AuthRequest, res) => {
         
         if (flashcardData && flashcardData.length > 0) {
           const flashcardsToInsert = flashcardData.map((fc: { question: string; answer: string }) => ({
-            id: cuid(),
+            id: createId(),
             documentId: id,
             question: fc.question,
             answer: fc.answer,
