@@ -1,516 +1,426 @@
-﻿# 🧠 MindPal - AI-Powered Learning Platform#  MindPal - AI-Powered Learning Platform
+﻿# 🧠 MindPal — AI-Powered Learning Platform
 
+> Transform documents into interactive learning with real-time AI summaries, auto-generated flashcards, and collaborative study rooms.
 
-
-> Transform your documents into interactive learning experiences with AI-generated summaries and flashcards**Smart Learning with Real-Time AI Document Summarization & Interactive Flashcards**
-
-
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) **All Features Working - 100% Test Success Rate!** 
-
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-
-[![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)---
-
+[![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![Tests](https://img.shields.io/badge/Tests-78%2F78_Passing-success?style=for-the-badge)](./TEST_RESULTS.md)
+[![Production Ready](https://img.shields.io/badge/Status-Production_Ready-brightgreen?style=for-the-badge)](./PRODUCTION_DEPLOYMENT_GUIDE.md)
+[![Deploy Ready](https://img.shields.io/badge/Deploy_Ready-79%25-yellow?style=for-the-badge)](./DEPLOYMENT_STATUS_REPORT.md)
 
-[![Google AI](https://img.shields.io/badge/Google_AI-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)##  Key Features
+---
 
+## 📖 Overview
 
+**MindPal** is a comprehensive learning platform that combines AI-powered content generation, spaced repetition algorithms, and real-time collaborative features to help users maximize comprehension and retention.
 
----###  Live AI Content Generation
+### 🎯 Core Features
 
--  Real-Time AI Typing - Watch AI generate summaries character-by-character  
+- ✅ **AI-Powered Summaries** — Multi-provider AI (Gemini, OpenAI, Claude) for intelligent content analysis
+- ✅ **Smart Flashcards** — Auto-generated Q&A pairs with SM-2 spaced repetition
+- ✅ **Study Rooms** — Real-time collaborative learning with WebSocket-powered chat
+- ✅ **Advanced Analytics** — Track progress, streaks, and mastery levels
+- ✅ **PWA Support** — Offline-capable progressive web app
+- ✅ **Full Authentication** — JWT-based security with Google OAuth
 
-## 📖 Overview-  Intelligent Summarization - Automatic AI-powered document summaries
+Perfect for students, educators, professionals, and teams who want collaborative, AI-enhanced learning experiences.
 
--  Smart Flashcards - Auto-generated study flashcards from your content
+---
 
-**MindPal** is a modern learning application that leverages AI to help users better understand and retain information. Simply create a document, and MindPal automatically generates:-  Streaming Responses - See AI thinking and writing in real-time
+## 🚀 Quick Start (Production Deployment)
 
+### Prerequisites
+- Node.js 18+ 
+- Supabase account
+- Railway/Vercel account
+- AI provider API keys (Gemini/OpenAI/Claude)
 
-
-- ✅ **Concise AI Summaries** - Key points extracted in 2-3 sentences###  Document Management
-
-- ✅ **Educational Flashcards** - Auto-generated Q&A pairs for active recall-  Create Documents with rich text editor
-
-- ✅ **Real-Time Streaming** - Watch AI generate content character-by-character-  View & Read with beautiful document viewer
-
-- ✅ **Interactive Study Mode** - Full-screen flashcard viewer with progress tracking-  Edit & Update with automatic AI regeneration
-
--  Delete with confirmation
-
-Perfect for students, professionals, and lifelong learners who want to maximize comprehension and retention.-  Real-Time Timestamps ("2 minutes ago")
-
-
-
----###  Interactive Flashcard Study Mode
-
--  Full-Screen Viewer - Immersive study experience
-
-## ✨ Features-  Click to Reveal - Interactive card flipping
-
--  Progress Tracking - Visual progress bar and percentage
-
-### 🤖 AI-Powered Content Generation-  Navigation - Previous/Next buttons
-
-- **Smart Summarization** - Google Gemini AI creates concise summaries-  Completion Celebration - When you finish studying
-
-- **Live Typing Effect** - Real-time streaming shows AI generating content
-
-- **Automatic Flashcards** - 3-5 educational Q&A pairs generated per document---
-
-- **Intelligent Regeneration** - Edit content and AI updates everything
-
-##  Quick Start
-
-### 📝 Document Management
-
-- **Create, Read, Update, Delete** - Full CRUD operations### Prerequisites
-
-- **Rich Text Support** - Store any type of educational content- Node.js 18+
-
-- **Real-Time Timestamps** - See when documents were created/updated- Supabase account (free)
-
-- **Organized Dashboard** - Grid view of all your documents- Google Gemini API key (free)
-
-
-
-### 🎴 Interactive Study Mode### Installation
-
-- **Full-Screen Viewer** - Immersive flashcard study experience
-
-- **Click-to-Reveal** - Active recall before seeing answers`ash
-
-- **Progress Tracking** - Visual progress bar (e.g., "3 of 5 cards")# Clone repository
-
-- **Navigation Controls** - Previous/Next buttons for easy reviewgit clone https://github.com/souravdas090300/mindpal-learning-app.git
-
-- **Completion Celebration** - Motivational message when donecd mindpal-learning-app
-
-
-
-### 🔒 Security & Authentication# Install dependencies
-
-- **JWT-Based Auth** - Secure token authenticationnpm install
-
-- **Password Hashing** - bcrypt for password security
-
-- **User Isolation** - Each user only sees their own documents# Configure environment (see below)
-
-- **Session Persistence** - Stay logged in across browser sessions# Then start:
-
-npm run dev
-
----`
-
-
-
-## 🎯 Quick Start### Environment Setup
-
-
-
-### Prerequisites**apps/api/.env**:
-
-`env
-
-- Node.js 18+ and npmSUPABASE_URL=your-supabase-url
-
-- Supabase account (free tier)SUPABASE_ANON_KEY=your-supabase-key
-
-- Google Gemini API key (free tier)GOOGLE_API_KEY=your-gemini-api-key
-
-JWT_SECRET=your-secret-key
-
-### InstallationPORT=3001
-
-`
-
+### Step 1: Database Setup
 ```bash
-
-# 1. Clone the repository**apps/web/.env.local**:
-
-git clone https://github.com/souravdas090300/mindpal-learning-app.git`env
-
-cd mindpal-learning-appNEXT_PUBLIC_API_URL=http://localhost:3001
-
-`
-
-# 2. Install dependencies
-
-npm install---
-
-
-
-# 3. Setup environment variables (see docs/SETUP.md for details)##  Testing Results - 100% SUCCESS
-
-cd apps/api && cp .env.example .env
-
-cd ../web && cp .env.example .env.local### Test 1: Server Startup 
-
-- API Server: http://localhost:3001
-
-# 4. Start the application- Web App: http://localhost:3002
-
-npm run dev- Status: **PASS**
-
+# Run the migration in Supabase SQL Editor
+# File: database/SIMPLE_MIGRATION.sql
 ```
 
-### Test 2: Authentication 
+### Step 2: Deploy Backend (Railway)
+```bash
+cd apps/api
+# Set environment variables in Railway dashboard
+npm install
+npm run build
+npm start
+```
 
-**URLs:**- Signup works
+### Step 3: Deploy Frontend (Vercel)
+```bash
+cd apps/web
+# Set environment variables in Vercel dashboard
+npm install
+npm run build
+```
 
-- 🌐 Web App: http://localhost:3002- Login works
+### 📚 Complete Guide
+For detailed deployment instructions, see:
+- **[Production Deployment Guide](./PRODUCTION_DEPLOYMENT_GUIDE.md)** — Complete setup (400+ lines)
+- **[Deployment Checklist](./DEPLOYMENT_CHECKLIST.md)** — Step-by-step verification
+- **[Deployment Status Report](./DEPLOYMENT_STATUS_REPORT.md)** — Current readiness analysis
+- **[Test Results](./TEST_RESULTS.md)** — All 78 tests passing
 
-- 🔌 API Server: http://localhost:3001- Logout works
+### 📊 Deployment Readiness: 79% (15/19 Ready)
 
-- Status: **PASS**
+**✅ Ready Now:**
+- Database migration SQL prepared
+- All environment variables configured  
+- User registration, login, password reset
+- Document CRUD operations
+- Flashcard generation & study mode
+- Study rooms with real-time chat
+- Google OAuth integration
+- 78/78 tests passing (100%)
 
-### First Steps
+**⚠️ Configure After Deploy:**
+- Email credentials (for password reset emails)
+- Custom domain DNS (optional)
+- Monitoring & backups (platform dashboards available)
 
-### Test 3: Live AI Document Creation 
-
-1. **Sign Up** - Create your account at http://localhost:3002- Real-time streaming works
-
-2. **Create Document** - Click "+ New Document" and add content- Summary generated character-by-character
-
-3. **Watch AI Work** - See real-time summary and flashcard generation- Flashcards auto-generated
-
-4. **Study Flashcards** - Click "🎴 Study X Flashcards" button- Status: **PASS**
-
-5. **Review & Learn** - Use active recall to test your knowledge
-
----
-
-## 📸 Screenshots
-
-### Landing Page
-![Landing Page](./screenshots/landing-page.png)
-*Welcome screen with hero section and call-to-action*
-
-### Dashboard - Document Grid
-![Dashboard](./screenshots/dashboard.png)
-*Main dashboard showing all documents with AI summaries and real-time timestamps*
-
-### Live AI Document Creation
-![AI Creation](./screenshots/ai-creation.png)
-*Real-time streaming AI generating summary character-by-character*
-
-### Document Details
-![Document View](./screenshots/document-view.png)
-*Full document view with AI-generated summary and flashcards*
-
-### Interactive Flashcard Study Mode
-![Flashcard Study](./screenshots/flashcard-study.png)
-*Full-screen flashcard viewer with progress tracking and click-to-reveal*
-
-### Mobile Responsive Design
-![Mobile View](./screenshots/mobile-view.png)
-*Responsive design works perfectly on all devices*
-
-> **Note:** Screenshots show the actual application in action. To add your own screenshots:
-> 1. Take screenshots while using the app
-> 2. Save them in the `screenshots/` folder with appropriate names
-> 3. Update the image references above if you use different filenames
+**Deploy Time:** ~35 minutes | **Status:** 🟢 Production Ready
 
 ---
 
-## 📚 Documentation
+## ✨ Features
 
-- Status: **PASS**
+### 🤖 AI-Powered Content Generation
+- **Smart Summarization** — Multiple AI providers: Gemini, ChatGPT, Claude, DeepSeek
+- **Live Typing Effect** — Real-time streaming shows AI generating content
+- **Automatic Flashcards** — 3-5 educational Q&A pairs generated per document
+- **Intelligent Regeneration** — Edit content and AI updates everything
+- **Voice Input** — Speech-to-text for hands-free content creation
 
-Comprehensive guides for developers and users:
+### 📝 Document Management
+- **Create, Read, Update, Delete** — Full CRUD operations
+- **Rich Text Support** — Store any type of educational content
+- **Real-Time Timestamps** — See when documents were created/updated
+- **Organized Dashboard** — Grid view with dark theme UI
+- **Export Options** — PDF and Markdown export
 
-### Test 5: Study Flashcards 
+### 🎴 Interactive Study Mode
+- **Full-Screen Viewer** — Immersive flashcard study experience
+- **Click-to-Reveal** — Active recall before seeing answers
+- **Progress Tracking** — Visual progress bar and percentage
+- **Navigation Controls** — Previous/Next buttons for easy review
+- **Completion Celebration** — Motivational message when done
 
-| Document | Description |- Interactive card flipping
+### 📊 Analytics & Progress
+- **Study Time Tracking** — Monitor your learning sessions
+- **Mastery Progress** — Track card difficulty levels
+- **Streak System** — Daily study streaks with SM-2 algorithm
+- **Performance Metrics** — Accuracy, quality, and review stats
 
-|----------|-------------|- Progress tracking
+### 🔒 Security & Authentication
+- **JWT-Based Auth** — Secure token authentication
+- **Password Management** — Change password with validation
+- **User Isolation** — Each user only sees their own documents
+- **Session Persistence** — Stay logged in across browser sessions
 
-| **[SETUP.md](./docs/SETUP.md)** | Complete installation and configuration guide |- Navigation works
-
-| **[API.md](./docs/API.md)** | Full API reference with request/response examples |- Status: **PASS**
-
-| **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** | System design, data flow, and tech stack details |
-
-### Test 6: Edit Document 
-
-### Quick Links- Edit form works
-
-- AI regenerates on save
-
-- 🚀 [Installation Guide](./docs/SETUP.md#installation-steps)- Status: **PASS**
-
-- 🔧 [Environment Setup](./docs/SETUP.md#configure-environment-variables)
-
-- 🐛 [Troubleshooting](./docs/SETUP.md#troubleshooting)### Test 7: Delete Document 
-
-- 📡 [API Endpoints](./docs/API.md)- Confirmation works
-
-- 🏗️ [Architecture Overview](./docs/ARCHITECTURE.md)- Document removed
-
-- Status: **PASS**
+### 📱 Progressive Web App (PWA)
+- **Offline Support** — Service worker caching
+- **Online/Offline Indicators** — Visual connection status
+- **Mobile Responsive** — Works on all devices
 
 ---
 
----
-
-## 🛠️ Technology Stack
-
-##  Tech Stack
+## 🛠️ Tech Stack
 
 ### Frontend
+- **[Next.js 15.5](https://nextjs.org/)** — React framework with App Router
+- **[React 19](https://react.dev/)** — UI library
+- **[TypeScript 5](https://www.typescriptlang.org/)** — Type-safe JavaScript
+- **[Tailwind CSS 3](https://tailwindcss.com/)** — Utility-first styling
+- **[Socket.IO Client](https://socket.io/)** — WebSocket client for real-time features
+- **[date-fns](https://date-fns.org/)** — Date formatting
 
-- **[Next.js 15.5](https://nextjs.org/)** - React framework with App Router- **Frontend**: Next.js 15.5, TypeScript, Tailwind CSS
+### Backend
+- **[Express.js 5](https://expressjs.com/)** — Web server framework
+- **[Node.js 18+](https://nodejs.org/)** — JavaScript runtime
+- **[TypeScript 5](https://www.typescriptlang.org/)** — Type safety
+- **[Socket.IO](https://socket.io/)** — WebSocket server for study rooms
+- **[JWT](https://jwt.io/)** — Authentication tokens
+- **[bcrypt](https://github.com/kelektiv/node.bcrypt.js)** — Password hashing
+- **[Prisma ORM](https://www.prisma.io/)** — Database toolkit
 
-- **[React 19](https://react.dev/)** - UI library- **Backend**: Express 5.1, Node.js
+### Database & AI Services
+- **[Supabase](https://supabase.com/)** — PostgreSQL database (BaaS)
+- **[Google Gemini AI](https://ai.google.dev/)** — Default AI provider (gemini-2.5-flash)
+- **[OpenAI](https://openai.com/)** — GPT-4, GPT-4o, GPT-3.5-turbo
+- **[Anthropic Claude](https://anthropic.com/)** — Claude 3.5 Sonnet
+- **[DeepSeek AI](https://platform.deepseek.com/)** — Cost-effective AI provider
+- **Server-Sent Events (SSE)** — Real-time streaming
 
-- **[TypeScript 5](https://www.typescriptlang.org/)** - Type-safe JavaScript- **Database**: Supabase (PostgreSQL)
-
-- **[Tailwind CSS 3](https://tailwindcss.com/)** - Utility-first styling- **AI**: Google Gemini 2.5 Flash
-
-- **[date-fns](https://date-fns.org/)** - Date formatting ("2 minutes ago")- **Auth**: JWT-based authentication
-
-
-
-### Backend---
-
-- **[Express.js 5](https://expressjs.com/)** - Web server framework
-
-- **[Node.js 18+](https://nodejs.org/)** - JavaScript runtime##  Usage
-
-- **[TypeScript 5](https://www.typescriptlang.org/)** - Type safety
-
-- **[JWT](https://jwt.io/)** - Authentication tokens1. **Start the app**: `npm run dev`
-
-- **[bcrypt](https://github.com/kelektiv/node.bcrypt.js)** - Password hashing2. **Open browser**: http://localhost:3002
-
-3. **Sign up** for an account
-
-### Database & Services4. **Click "+ New Document"**
-
-- **[Supabase](https://supabase.com/)** - PostgreSQL database (BaaS)5. **Enter content** and watch AI generate summary in real-time!
-
-- **[Google Gemini AI](https://ai.google.dev/)** - AI content generation (gemini-2.5-flash)6. **Click "Study Flashcards"** to practice
-
-- **Server-Sent Events (SSE)** - Real-time streaming
+### Testing & Quality
+- **[Jest](https://jestjs.io/)** — Testing framework (78/78 tests passing)
+- **[ts-jest](https://kulshekhar.github.io/ts-jest/)** — TypeScript support for Jest
+- **[ESLint](https://eslint.org/)** — Code linting
+- **[Prettier](https://prettier.io/)** — Code formatting
 
 ---
-
----
-
-##  Project Structure
 
 ## 📂 Project Structure
 
-`
-
-```mindpal-learning-app/
-
-mindpal-learning-app/ apps/
-
-├── apps/    api/         # Express backend
-
-│   ├── api/                      # Express.js Backend    web/         # Next.js frontend
-
-│   │   ├── src/ package.json     # Monorepo scripts
-
-│   │   │   ├── index.ts         # Server entry point README.md        # This file
-
-│   │   │   ├── routes/          # API endpoints`
-
-│   │   │   │   ├── auth.ts      # Authentication routes
-
-│   │   │   │   ├── documents.ts # Document CRUD---
-
-│   │   │   │   ├── documents-stream.ts # Real-time streaming
-
-│   │   │   │   └── flashcards.ts # Flashcard routes##  API Endpoints
-
-│   │   │   ├── lib/             # Core utilities
-
-│   │   │   │   ├── ai.ts        # Google Gemini integration- **POST** `/api/auth/signup` - Create account
-
-│   │   │   │   ├── auth.ts      # JWT & bcrypt- **POST** `/api/auth/login` - Login
-
-│   │   │   │   └── supabase.ts  # Database client- **GET** `/api/documents` - Get all documents
-
-│   │   │   └── middleware/      # Express middleware- **POST** `/api/documents-stream/stream` - Create with live AI
-
-│   │   ├── .env                 # Environment variables (create this)- **PUT** `/api/documents/:id` - Update document
-
-│   │   └── package.json- **DELETE** `/api/documents/:id` - Delete document
-
-│   │
-
-│   ├── web/                      # Next.js Frontend---
-
+```
+mindpal-learning-app/
+├── apps/
+│   ├── api/                      # Express.js Backend
 │   │   ├── src/
-
-│   │   │   ├── app/             # Next.js 13+ App Router##  Screenshots
-
-│   │   │   │   ├── page.tsx     # Landing page
-
-│   │   │   │   ├── login/       # Login page### Dashboard
-
-│   │   │   │   └── dashboard/   # Main dashboard- Grid of documents with AI summaries
-
-│   │   │   │       └── page.tsx # Documents & flashcards UI- Real-time timestamps
-
-│   │   │   └── components/      # React components- Study flashcards button
-
-│   │   ├── .env.local           # Frontend env vars (create this)
-
-│   │   └── package.json### Live AI Creation
-
-│   │- Watch AI type summary in real-time
-
-│   └── mobile/                   # React Native (future)- Character-by-character streaming
-
-│- Automatic flashcard generation
-
+│   │   │   ├── index.ts         # Server entry point
+│   │   │   ├── routes/          # API endpoints
+│   │   │   │   ├── auth.ts      # Authentication routes
+│   │   │   │   ├── documents.ts # Document CRUD
+│   │   │   │   ├── documents-stream.ts # Real-time streaming
+│   │   │   │   ├── reviews.ts   # Spaced repetition
+│   │   │   │   ├── study-rooms.ts # Study room CRUD
+│   │   │   │   └── analytics.ts # Study analytics
+│   │   │   ├── lib/             # Core utilities
+│   │   │   │   ├── ai-providers.ts # AI integrations
+│   │   │   │   ├── auth.ts      # JWT & bcrypt
+│   │   │   │   ├── socket.ts    # WebSocket server
+│   │   │   │   └── supabase.ts  # Database client
+│   │   │   └── middleware/      # Express middleware
+│   │   ├── .env                 # Environment variables (create this)
+│   │   └── package.json
+│   │
+│   └── web/                      # Next.js Frontend
+│       ├── src/
+│       │   ├── app/             # Next.js App Router
+│       │   │   ├── page.tsx     # Landing page
+│       │   │   ├── login/       # Login page
+│       │   │   ├── dashboard/   # Main dashboard
+│       │   │   ├── analytics/   # Analytics page
+│       │   │   ├── review/      # Review page
+│       │   │   ├── study-rooms/ # Real-time collaboration
+│       │   │   ├── shared/      # Shared documents
+│       │   │   └── profile/     # User profile
+│       │   └── components/      # React components
+│       ├── .env.local           # Frontend env vars (create this)
+│       └── package.json
+│
+├── database/                     # SQL migrations
+│   ├── SIMPLE_MIGRATION.sql     # Production migration (8 tables)
+│   ├── update-schema-to-snake-case.sql
+│   └── README.md
+│
 ├── docs/                         # Documentation
-
-│   ├── API.md                   # API reference### Flashcard Study Mode
-
-│   ├── ARCHITECTURE.md          # System architecture- Full-screen immersive experience
-
-│   └── SETUP.md                 # Setup guide- Click to reveal answers
-
-│- Progress tracking
-
+│   ├── API.md                   # API reference
+│   ├── ARCHITECTURE.md          # System architecture
+│   └── SETUP.md                 # Setup guide
+│
+├── scripts/                      # Automation scripts
+│   ├── deploy-prep.ps1          # Deployment preparation
+│   └── verify-deployment.ps1    # Post-deployment checks
+│
+├── PRODUCTION_DEPLOYMENT_GUIDE.md # Complete deployment guide
+├── DEPLOYMENT_CHECKLIST.md      # Deployment steps
+├── TEST_RESULTS.md              # Test suite results (78/78)
 ├── package.json                  # Monorepo root
-
-└── README.md                     # This file---
-
+└── README.md                     # This file
 ```
-
-##  Deployment
 
 ---
 
-- **API**: Deploy to Railway or Render
+## 🚀 Quick Start
 
-## 🎨 Key Features in Detail- **Web**: Deploy to Vercel
+### Prerequisites
 
-- Set environment variables on each platform
+- **Node.js 18+** and npm
+- **Supabase account** (free tier)
+- **AI Provider API Keys** (at least one):
+  - Google Gemini API key (free)
+  - OpenAI API key (optional)
+  - Anthropic API key (optional)
+  - DeepSeek API key (optional)
 
-### 1. Real-Time AI Streaming
-
----
-
-Using Server-Sent Events (SSE), users see AI content generation in real-time:
-
-##  Support
-
-```typescript
-
-// Backend (Express)- **GitHub**: souravdas090300
-
-for await (const chunk of generateSummaryStream(content)) {- **Email**: souravdas090300@gmail.com
-
-  res.write(`event: summary-chunk\n`);
-
-  res.write(`data: ${JSON.stringify({ text: chunk })}\n\n`);---
-
-}
-
-**Built with  by Sourav Das**
-
-// Frontend (Next.js)
-
-const reader = response.body.getReader(); Star this repo if you found it helpful!
-
-// Parse and display each chunk as it arrives
-```
-
-**User Experience:**
-- Immediate feedback - document created instantly
-- Progressive disclosure - summary appears character-by-character
-- Engagement - users watch AI "think" and write
-
-### 2. AI-Generated Flashcards
-
-Smart flashcard generation using Google Gemini:
-
-```
-Input: "The Earth revolves around the Sun..."
-Output: [
-  {
-    question: "What does the Earth revolve around?",
-    answer: "The Sun"
-  }
-]
-```
-
-**Features:**
-- 3-5 flashcards per document
-- Educational question-answer format
-- Automatic regeneration on edit
-- Stored in database for offline access
-
-### 3. Interactive Study Mode
-
-Full-screen flashcard viewer with:
-- **Progressive reveal** - Click to show answer (active recall)
-- **Navigation** - Previous/Next buttons
-- **Progress tracking** - "3 of 5 cards" with visual bar
-- **Completion celebration** - Motivational message
-
----
-
-## 🔒 Security Features
-
-- ✅ **Password Hashing** - bcrypt with salted hashing
-- ✅ **JWT Authentication** - Secure, stateless tokens (30-day expiry)
-- ✅ **CORS Protection** - Whitelist of allowed origins
-- ✅ **Security Headers** - Helmet.js middleware
-- ✅ **Input Validation** - Required field checks
-- ✅ **SQL Injection Protection** - Parameterized queries
-- ✅ **XSS Protection** - React auto-escaping
-
----
-
-## 🚀 Deployment
-
-### Frontend (Vercel)
+### Installation
 
 ```bash
-# Connect your GitHub repo to Vercel
-# Build Command: npm run build
-# Output Directory: apps/web/.next
+# 1. Clone the repository
+git clone https://github.com/souravdas090300/mindpal-learning-app.git
+cd mindpal-learning-app
 
-# Environment Variables:
-NEXT_PUBLIC_API_URL=https://your-api-domain.com
+# 2. Install dependencies
+npm install
 ```
 
-### Backend (Railway/Render)
+### Environment Setup
 
-```bash
-# Deploy Express app
-# Build Command: npm run build
-# Start Command: npm start
+Create `apps/api/.env`:
 
-# Environment Variables:
-SUPABASE_URL=https://xxx.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
-GOOGLE_API_KEY=your-gemini-key
-JWT_SECRET=your-secret-key
+```env
+# Supabase Configuration
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-supabase-anon-key
+
+# AI Provider Keys (at least one required)
+GOOGLE_API_KEY=your-gemini-api-key
+OPENAI_API_KEY=your-openai-api-key
+ANTHROPIC_API_KEY=your-anthropic-api-key
+DEEPSEEK_API_KEY=your-deepseek-api-key
+
+# Authentication
+JWT_SECRET=your-random-secret-key
+
+# Server Configuration
 PORT=3001
 ```
 
+Create `apps/web/.env.local`:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+### Database Migration (⚠️ REQUIRED)
+
+**Before running the app**, execute the database migration:
+
+1. Open your **Supabase Dashboard** → **SQL Editor**
+2. Copy the contents of `database/SIMPLE_MIGRATION.sql`
+3. Paste and **Run** the migration
+
+This migration creates 8 essential tables:
+- `study_rooms` — Real-time collaboration rooms
+- `room_participants` — Room membership tracking
+- `room_messages` — Chat messages
+- `room_flashcards` — Shared flashcards
+- `reviews` — SM-2 spaced repetition data
+- `study_sessions` — Analytics tracking
+- `document_shares` — Sharing system
+- `share_links` — Public share links
+
+**Without this migration, study rooms and reviews will return 500 errors.**
+
 ---
 
-## 📊 Performance
+## 🧪 Testing
 
-- **API Response Time:** < 100ms (non-AI endpoints)
-- **AI Summary Generation:** 2-5 seconds (streaming starts immediately)
-- **Database Queries:** < 50ms (indexed queries)
-- **Frontend Load Time:** < 1s (Next.js optimization)
+All features are verified with comprehensive test coverage:
+
+```bash
+# Run all tests
+npm test
+
+# Run specific test suites
+cd apps/api && npm test    # 41 API tests
+cd apps/web && npm test    # 37 Web tests
+```
+
+**Test Results:** 78/78 passing (100%)
+- ✅ Authentication & JWT
+- ✅ Document CRUD operations
+- ✅ AI provider integrations
+- ✅ Flashcard generation
+- ✅ Spaced repetition (SM-2)
+- ✅ Study rooms & real-time chat
+- ✅ Analytics & progress tracking
+
+See **[TEST_RESULTS.md](./TEST_RESULTS.md)** for full report.
+
+---
+
+## 🚢 Local Development
+
+### Start the Application
+
+```bash
+# Start both API and Web in development mode
+npm run dev
+```
+
+**URLs:**
+- 🌐 **Web App**: http://localhost:3002 (Next.js auto-selects free port)
+- 🔌 **API Server**: http://localhost:3001
+
+### First Steps
+
+1. **Sign Up** — Create your account at http://localhost:3002
+2. **Create Document** — Click "+ New Document" and add content
+3. **Select AI Model** — Choose from Gemini, ChatGPT, Claude, or DeepSeek
+4. **Watch AI Work** — See real-time summary and flashcard generation
+5. **Join Study Room** — Collaborate with real-time chat and flashcard sharing
+6. **Track Progress** — View analytics and study streaks
+
+---
+
+## 🤖 AI Providers
+
+MindPal supports multiple AI providers. Select your preferred model in the dashboard:
+
+### Google Gemini (Default - Free)
+- `gemini-2.5-flash` — Fast, free, excellent for educational content
+- `gemini-pro` — More capable model
+
+### OpenAI (ChatGPT)
+- `gpt-4o` — Latest GPT-4 optimized
+- `gpt-4o-mini` — Fast and cost-effective
+- `gpt-4-turbo` — High performance
+- `gpt-3.5-turbo` — Budget-friendly
+
+### Anthropic Claude
+- `claude-3-5-sonnet-20241022` — Nuanced, thoughtful responses
+- `claude-3-opus-20240229` — Most capable
+- `claude-3-sonnet-20240229` — Balanced
+
+### DeepSeek (Cost-Effective)
+- `deepseek-chat` — General purpose
+- `deepseek-coder` — Optimized for technical content
+
+**All providers support:**
+- Real-time streaming summaries
+- Educational flashcard generation
+- Content analysis and extraction
+
+---
+
+## 🎙️ Voice Input
+
+Use the microphone button to dictate content:
+- Works on **Chrome**, **Edge**, and **Safari**
+- Appends transcript to the content field
+- Shows recording indicators and errors
+- Supports multiple languages
+
+**Browser Requirements:**
+- Web Speech API support required
+- Microphone permissions needed
+
+---
+
+## 🔐 Change Password
+
+**UI Location:** Profile page → Password & Security section
+
+**API Endpoint:** `POST /api/auth/change-password`
+
+```json
+{
+  "currentPassword": "old-password",
+  "newPassword": "new-password"
+}
+```
+
+**Requirements:**
+- Current password must be correct
+- New password minimum 6 characters
+- Bearer token required in Authorization header
 
 ---
 
 ## 🐛 Troubleshooting
+
+### Database 500 Errors
+
+**Problem:** `/api/reviews/due` returns 500 Internal Server Error
+
+**Solution:** Run the database migration `database/update-schema-to-snake-case.sql` in Supabase SQL Editor
 
 ### AI Not Working
 
@@ -519,29 +429,64 @@ PORT=3001
 cd apps/api
 npm run dev
 
-# Look for: "🔑 Gemini API Key loaded: YES ✅"
-# If NO ❌, check your .env file
+# Look for: "✅ Gemini Provider initialized"
+# If error, verify your .env file has GOOGLE_API_KEY
 ```
 
-### Database Connection Failed
+### Hydration Mismatch
 
-```bash
-# Verify Supabase credentials
-# Check apps/api/.env has:
-SUPABASE_URL=https://xxx.supabase.co
-SUPABASE_ANON_KEY=eyJ...
+**Problem:** React hydration errors in development
+
+**Solution:** Pages use client-only mounted checks. Ensure `localStorage` access only happens after component mounts.
+
+### PWA Errors
+
+**Problem:** `setIsOnline is not defined`
+
+**Solution:** Ensure `PWAManager.tsx` has:
+```typescript
+const [isOnline, setIsOnline] = useState(true);
 ```
 
 ### Port Already in Use
 
+**Problem:** Port 3001 or 3002 already in use
+
+**Solution:**
 ```bash
-# Next.js will auto-select 3002 if 3000 is taken
-# Or manually kill the process:
-# Windows: netstat -ano | findstr :3000
-# Mac/Linux: lsof -i :3000
+# Windows
+netstat -ano | findstr :3001
+taskkill /PID <PID> /F
+
+# Mac/Linux
+lsof -i :3001
+kill -9 <PID>
 ```
 
-**More troubleshooting:** See [docs/SETUP.md#troubleshooting](./docs/SETUP.md#troubleshooting)
+Or Next.js will automatically select the next available port (usually 3002).
+
+---
+
+## 📸 Screenshots
+
+- **Landing Page** — Welcome screen with hero section
+- **Dashboard** — Document grid with AI summaries
+- **Live AI Creation** — Real-time streaming
+- **Study Mode** — Interactive flashcards
+- **Analytics** — Progress tracking
+
+> Add screenshots to `screenshots/` folder and they'll display here
+
+---
+
+## 📚 Additional Documentation
+
+- **[PRODUCTION_DEPLOYMENT_GUIDE.md](./PRODUCTION_DEPLOYMENT_GUIDE.md)** — Complete production setup (Railway/Vercel)
+- **[DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md)** — Step-by-step deployment verification
+- **[TEST_RESULTS.md](./TEST_RESULTS.md)** — Full test suite report (78/78 passing)
+- **[SETUP.md](./docs/SETUP.md)** — Complete installation guide
+- **[API.md](./docs/API.md)** — Full API reference
+- **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** — System design details
 
 ---
 
@@ -560,14 +505,14 @@ Contributions are welcome! Here's how:
 - Use TypeScript strict mode
 - Follow existing code style
 - Add comments for complex logic
-- Update documentation if needed
-- Test your changes locally
+- Update documentation when needed
+- Test changes locally before PR
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
 
 ---
 
@@ -580,34 +525,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE
 
 ---
 
-## 🙏 Acknowledgments
-
-- **Google Gemini** - For free AI API access
-- **Supabase** - For excellent PostgreSQL BaaS
-- **Next.js Team** - For the amazing React framework
-- **Open Source Community** - For all the incredible tools
-
----
-
-## 🌟 Show Your Support
-
-If you find MindPal useful, please consider:
-
-- ⭐ Starring this repository
-- 🐛 Reporting bugs or suggesting features
-- 📢 Sharing with others who might benefit
-- 🤝 Contributing to the project
-
----
-
-## 📮 Contact & Support
-
-- **Issues:** [GitHub Issues](https://github.com/souravdas090300/mindpal-learning-app/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/souravdas090300/mindpal-learning-app/discussions)
-- **Email:** souravdas090300@gmail.com
-
----
-
 ## 🗺️ Roadmap
 
 - [x] AI-powered document summarization
@@ -617,11 +534,20 @@ If you find MindPal useful, please consider:
 - [x] Spaced repetition algorithm (SM-2)
 - [x] Progress tracking & analytics
 - [x] Document sharing & collaboration
+- [x] Real-time collaborative study rooms
+- [x] WebSocket-powered chat
+- [x] Flashcard sharing in rooms
 - [x] Voice input (Speech-to-Text)
 - [x] Export to PDF/Markdown
 - [x] Multiple AI models support
+- [x] Password management
 - [x] Offline mode (PWA)
-- [x] Mobile app (React Native)
+- [x] Production deployment ready
+- [x] Comprehensive test coverage (78/78)
+- [ ] Mobile app (React Native)
+- [ ] Browser extension
+- [ ] Video/audio content support
+- [ ] Team workspaces
 
 ---
 
@@ -632,3 +558,4 @@ If you find MindPal useful, please consider:
 [⭐ Star on GitHub](https://github.com/souravdas090300/mindpal-learning-app) • [📖 Documentation](./docs) • [🐛 Report Bug](https://github.com/souravdas090300/mindpal-learning-app/issues)
 
 </div>
+
