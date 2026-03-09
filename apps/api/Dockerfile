@@ -9,14 +9,14 @@ RUN apk add --no-cache openssl
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files from monorepo root
 COPY package*.json ./
 
 # Copy Prisma schema
 COPY prisma ./prisma/
 
-# Install ALL dependencies (including devDependencies for build)
-RUN npm ci
+# Install ALL dependencies (use npm install for monorepo without package-lock in this dir)
+RUN npm install
 
 # Generate Prisma client
 RUN npx prisma generate
@@ -27,8 +27,8 @@ COPY . .
 # Build TypeScript to JavaScript
 RUN npm run build
 
-# Remove devDependencies to reduce image size
-RUN npm ci --only=production
+# Remove devDependencies to reduce image size (skip this for now to avoid lock file issues)
+# RUN npm ci --only=production
 
 # Expose port (configurable via environment)
 ENV PORT=8080
