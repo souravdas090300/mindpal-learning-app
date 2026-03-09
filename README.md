@@ -29,45 +29,132 @@ Perfect for students, educators, professionals, and teams who want collaborative
 
 ---
 
-## 🚀 Quick Start (Production Deployment)
+## 🆕 Latest Updates (January 2025)
+
+All previously missing features have been **fully implemented and tested**:
+
+### ✅ Real-Time Study Rooms with Socket.IO
+- Create public/private study rooms
+- Live chat with typing indicators
+- Active user tracking and presence
+- User join/leave notifications
+- Room participant limits
+- JWT authentication for WebSocket connections
+
+### ✅ DeepSeek AI Provider
+- Cost-effective AI alternative
+- Two models: `deepseek-chat`, `deepseek-coder`
+- OpenAI-compatible API integration
+- Streaming support for real-time generation
+
+### ✅ Password Reset Flow
+- Forgot password via email
+- Secure token generation (1-hour expiry)
+- HTML email templates
+- Gmail/SMTP/Ethereal support
+- Change password for authenticated users
+
+### ✅ Test Suite Fixes
+- Jest TypeScript configuration fixed
+- All 78 tests now passing (100%)
+- New test suites for study rooms & password reset
+- Coverage reports generating correctly
+
+**📖 Documentation:**
+- [SETUP_GUIDE.md](./SETUP_GUIDE.md) — Complete setup instructions
+- [IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md) — What was built
+- Run [`verify-features.ps1`](./verify-features.ps1) to check your setup
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js 18+ 
+- Docker & Docker Compose (optional but recommended)
 - Supabase account
-- Render account (backend hosting)
-- Vercel account (frontend hosting)
-- AI provider API keys (Gemini/OpenAI/Claude)
+- AI provider API keys (at least Google Gemini - free)
 
-### Step 1: Database Setup
+### Local Development Setup
+
+#### 1. Clone and Install
 ```bash
-# Run the migration in Supabase SQL Editor
-# File: database/SIMPLE_MIGRATION.sql
+git clone <your-repo>
+cd mindpal-learning-app
+npm install
 ```
 
-### Step 2: Deploy Backend (Render)
-1. Go to **[render.com](https://render.com)** → Sign up with GitHub
-2. New → **Web Service**
-3. Connect repository: `mindpal-learning-app`
-4. Configure:
-   - **Name**: mindpal-api
-   - **Root Directory**: `apps/api`
-   - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm start`
-5. Add **Environment Variables** (see below)
-6. Click **Create Web Service**
+#### 2. Set Up Environment Variables
 
-### Step 3: Deploy Frontend (Vercel)
-1. Go to **[vercel.com](https://vercel.com)** → Sign up with GitHub
-2. **Import Project** → Select `mindpal-learning-app`
-3. Configure:
-   - **Framework**: Next.js
-   - **Root Directory**: `apps/web`
-4. Add Environment Variable:
-   - `NEXT_PUBLIC_API_URL`: Your Render backend URL
-5. Click **Deploy**
+**Backend (apps/api):**
+```bash
+cd apps/api
+cp .env.dev .env
+# Edit .env with your actual values
+```
 
-### 📚 Complete Guide
-**Render Backend Environment Variables:**
+**Frontend (apps/web):**
+```bash
+cd apps/web
+cp .env.dev .env.local
+# Edit .env.local with your actual values
+```
+
+#### 3. Start with Docker (Recommended)
+```bash
+# From project root
+docker-compose up
+```
+This will start:
+- PostgreSQL database on port 5432
+- Backend API on port 3001
+- Frontend web on port 3000
+
+#### 4. Or Start Manually
+```bash
+# Terminal 1 - Backend
+cd apps/api
+npm run dev
+
+# Terminal 2 - Frontend
+cd apps/web
+npm run dev
+```
+
+#### 5. Run Database Migrations
+```bash
+cd apps/api
+npx prisma migrate dev
+npx prisma generate
+```
+
+### Production Deployment
+
+See [DEPLOY_RENDER.md](./DEPLOY_RENDER.md) for complete Render.com deployment guide.
+
+**Quick Deploy Steps:**
+1. Create Supabase project and get credentials
+2. Get Google Gemini API key (free)
+3. Push code to GitHub
+4. Connect GitHub repo to Render Blueprint
+5. Set environment variables from `.env.prod` templates
+6. Deploy!
+
+### 📚 Environment Files Structure
+
+```
+apps/
+├── api/
+│   ├── .env          # Ignored - your local secrets
+│   ├── .env.dev      # Template for development
+│   └── .env.prod     # Template for production
+└── web/
+    ├── .env.local    # Ignored - your local secrets
+    ├── .env.dev      # Template for development
+    └── .env.prod     # Template for production
+```
+
+**Environment Variables:**
 ```env
 DATABASE_URL=postgresql://postgres:PASSWORD@db.PROJECT.supabase.co:5432/postgres
 SUPABASE_URL=https://PROJECT.supabase.co
@@ -77,6 +164,10 @@ JWT_SECRET=your-strong-random-secret
 GOOGLE_API_KEY=your-gemini-api-key
 OPENAI_API_KEY=your-openai-key (optional)
 ANTHROPIC_API_KEY=your-claude-key (optional)
+DEEPSEEK_API_KEY=your-deepseek-key (optional)
+EMAIL_SERVICE=gmail
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-gmail-app-password
 GOOGLE_CLIENT_ID=your-google-oauth-id
 GOOGLE_CLIENT_SECRET=your-google-oauth-secret
 NODE_ENV=production
@@ -293,6 +384,11 @@ DEEPSEEK_API_KEY=your-deepseek-api-key
 # Authentication
 JWT_SECRET=your-random-secret-key
 
+# Email Service (for password reset)
+EMAIL_SERVICE=gmail                    # Options: gmail, smtp, ethereal
+EMAIL_USER=your-email@gmail.com        # Your email address
+EMAIL_PASSWORD=your-app-password       # Gmail app password or SMTP password
+
 # Server Configuration
 PORT=3001
 ```
@@ -506,7 +602,7 @@ Or Next.js will automatically select the next available port (usually 3002).
 
 ## 📚 Additional Documentation
 
-- **[PRODUCTION_DEPLOYMENT_GUIDE.md](./PRODUCTION_DEPLOYMENT_GUIDE.md)** — Complete production setup (Railway/Vercel)
+- **[PRODUCTION_DEPLOYMENT_GUIDE.md](./PRODUCTION_DEPLOYMENT_GUIDE.md)** — Complete production setup (Render/Vercel)
 - **[DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md)** — Step-by-step deployment verification
 - **[TEST_RESULTS.md](./TEST_RESULTS.md)** — Full test suite report (78/78 passing)
 - **[SETUP.md](./docs/SETUP.md)** — Complete installation guide

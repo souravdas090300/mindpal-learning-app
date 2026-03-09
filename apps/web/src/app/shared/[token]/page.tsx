@@ -10,6 +10,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { use } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiClient } from '../../../lib/api';
 
@@ -29,7 +30,8 @@ interface SharedDocument {
   flashcards?: Flashcard[];
 }
 
-export default function PublicSharePage({ params }: { params: { token: string } }) {
+export default function PublicSharePage({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = use(params);
   const router = useRouter();
   const [document, setDocument] = useState<SharedDocument | null>(null);
   const [permission, setPermission] = useState<string>('');
@@ -41,13 +43,13 @@ export default function PublicSharePage({ params }: { params: { token: string } 
   useEffect(() => {
     loadDocument();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.token]);
+  }, [token]);
 
   const loadDocument = async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await apiClient.accessDocumentByToken(params.token);
+      const data = await apiClient.accessDocumentByToken(token);
       setDocument(data.document);
       setPermission(data.permission);
     } catch (err: unknown) {

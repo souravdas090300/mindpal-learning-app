@@ -1,0 +1,7 @@
+{
+  "jest.enable": false,
+  "jest.autoRun": "off",
+  "jest.disabledWorkspaceFolders": [
+    "mindpal-learning-app"
+  ]
+}

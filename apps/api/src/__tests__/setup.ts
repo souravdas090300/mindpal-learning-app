@@ -4,7 +4,6 @@
  * Global setup and teardown for Jest tests
  */
 
-import '@jest/globals';
 import { PrismaClient } from '@prisma/client';
 
 // Mock Prisma Client
@@ -12,6 +11,7 @@ export const mockPrismaClient = {
   user: {
     create: jest.fn(),
     findUnique: jest.fn(),
+    findFirst: jest.fn(),
     findMany: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
@@ -35,6 +35,13 @@ export const mockPrismaClient = {
     findMany: jest.fn(),
   },
   sharedDocument: {
+    create: jest.fn(),
+    findUnique: jest.fn(),
+    findMany: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
+  studyRoom: {
     create: jest.fn(),
     findUnique: jest.fn(),
     findMany: jest.fn(),

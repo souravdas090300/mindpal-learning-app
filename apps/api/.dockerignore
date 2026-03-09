@@ -1,0 +1,52 @@
+# .dockerignore - Files to exclude from Docker build
+
+# Node modules (will be installed inside container)
+node_modules/
+npm-debug.log
+
+# Environment files (sensitive data)
+.env
+.env.*
+!.env.example
+
+# Development files
+*.md
+.git/
+.gitignore
+.github/
+
+# IDE
+.vscode/
+.idea/
+
+# Test files
+coverage/
+*.test.ts
+*.test.js
+__tests__/
+test/
+
+# Build artifacts (will be rebuilt)
+dist/
+build/
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Prisma
+prisma/migrations/
+
+# Documentation
+README.md
+docs/
+
+# Scripts
+*.ps1
+*.sh
+test-*.js
+diagnose-*.js

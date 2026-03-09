@@ -1,0 +1,85 @@
+# Render Infrastructure as Code
+# Deploy with: Connect your GitHub repo to Render and it will auto-detect this file
+
+services:
+  # Backend API Service
+  - type: web
+    name: mindpal-api
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: apps/api
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      # Database
+      - key: DATABASE_URL
+        sync: false  # Set this manually in Render dashboard
+      
+      # Supabase
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      
+      # JWT Secret
+      - key: JWT_SECRET
+        generateValue: true  # Render will generate a secure random value
+      
+      # AI Provider Keys (Optional)
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      
+      # Pinecone Vector Database
+      - key: PINECONE_API_KEY
+        sync: false
+      
+      # Google OAuth
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_CALLBACK_URL
+        value: https://mindpal-api.onrender.com/api/auth/google/callback
+      
+      # Frontend URL
+      - key: WEB_APP_URL
+        value: https://mindpal.onrender.com
+      
+      # Server Config
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+    
+    healthCheckPath: /health
+    
+  # Frontend Web Service
+  - type: web
+    name: mindpal-web
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: apps/web
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      # API Connection
+      - key: NEXT_PUBLIC_API_URL
+        value: https://mindpal-api.onrender.com
+      
+      # Supabase
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      
+      # Node Environment
+      - key: NODE_ENV
+        value: production

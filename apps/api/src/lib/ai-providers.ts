@@ -421,6 +421,152 @@ Respond with ONLY the JSON array, no additional text.`,
 }
 
 /**
+ * DeepSeek AI Provider
+ * Models: deepseek-chat, deepseek-coder
+ * - Cost-effective alternative to OpenAI
+ * - Excellent for technical content
+ * - Compatible with OpenAI API format
+ */
+export class DeepSeekProvider implements AIProvider {
+  private client: OpenAI;
+  private modelName: string;
+
+  constructor(modelName: string = "deepseek-chat") {
+    if (!process.env.DEEPSEEK_API_KEY) {
+      throw new Error("DEEPSEEK_API_KEY environment variable is not set");
+    }
+    
+    // DeepSeek uses OpenAI-compatible API
+    this.client = new OpenAI({
+      apiKey: process.env.DEEPSEEK_API_KEY,
+      baseURL: "https://api.deepseek.com/v1",
+    });
+    this.modelName = modelName;
+    console.log(`✅ DeepSeek Provider initialized: ${modelName}`);
+  }
+
+  getName(): string {
+    return "DeepSeek AI";
+  }
+
+  getModel(): string {
+    return this.modelName;
+  }
+
+  async generateSummary(content: string): Promise<string> {
+    const completion = await this.client.chat.completions.create({
+      model: this.modelName,
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a helpful assistant that creates concise summaries. Provide summaries in 2-3 sentences focusing on key points.",
+        },
+        {
+          role: "user",
+          content: `Please summarize the following text:\n\n${content}`,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 200,
+    });
+
+    return completion.choices[0].message.content?.trim() || "";
+  }
+
+  async *generateSummaryStream(content: string): AsyncGenerator<string> {
+    const stream = await this.client.chat.completions.create({
+      model: this.modelName,
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a helpful assistant that creates concise summaries. Provide summaries in 2-3 sentences focusing on key points.",
+        },
+        {
+          role: "user",
+          content: `Please summarize the following text:\n\n${content}`,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 200,
+      stream: true,
+    });
+
+    for await (const chunk of stream) {
+      const text = chunk.choices[0]?.delta?.content || "";
+      if (text) {
+        yield text;
+      }
+    }
+  }
+
+  async generateFlashcards(
+    content: string
+  ): Promise<Array<{ question: string; answer: string }>> {
+    const completion = await this.client.chat.completions.create({
+      model: this.modelName,
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an educational assistant that creates study flashcards. Always respond with valid JSON array format.",
+        },
+        {
+          role: "user",
+          content: `Based on the following text, generate 3-5 educational flashcards with clear questions and concise answers. 
+Format your response as a valid JSON array like this:
+[{"question": "Q1", "answer": "A1"}, {"question": "Q2", "answer": "A2"}]
+
+TEXT: ${content}`,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 1000,
+    });
+
+    const text = completion.choices[0].message.content || "";
+
+    try {
+      // Try to parse as JSON object first
+      const parsed = JSON.parse(text);
+      
+      // If it's an object with a flashcards key, extract that
+      if (parsed.flashcards && Array.isArray(parsed.flashcards)) {
+        return parsed.flashcards.slice(0, 5);
+      }
+      
+      // If it's directly an array
+      if (Array.isArray(parsed)) {
+        return parsed.slice(0, 5);
+      }
+
+      // Try to find array in the response
+      const jsonMatch = text.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        const flashcards = JSON.parse(jsonMatch[0]);
+        return flashcards.slice(0, 5);
+      }
+    } catch (error) {
+      console.error("Failed to parse DeepSeek flashcards:", error);
+    }
+
+    // Fallback
+    const summary = await this.generateSummary(content);
+    return [
+      {
+        question: "What is the main topic of this content?",
+        answer: summary,
+      },
+      {
+        question: "What are the key points covered?",
+        answer: "Key points from the provided content.",
+      },
+    ];
+  }
+}
+
+/**
  * Factory class to create AI provider instances
  */
 export class AIProviderFactory {
@@ -443,6 +589,9 @@ export class AIProviderFactory {
       case "claude":
       case "anthropic":
         return new ClaudeProvider(model || "claude-3-5-sonnet-20241022");
+
+      case "deepseek":
+        return new DeepSeekProvider(model || "deepseek-chat");
 
       default:
         console.warn(`Unknown provider: ${provider}, using Gemini as default`);
@@ -481,6 +630,12 @@ export class AIProviderFactory {
           "claude-3-sonnet-20240229",
         ],
         requiresKey: !!process.env.ANTHROPIC_API_KEY,
+      },
+      {
+        id: "deepseek",
+        name: "DeepSeek AI",
+        models: ["deepseek-chat", "deepseek-coder"],
+        requiresKey: !!process.env.DEEPSEEK_API_KEY,
       },
     ];
   }

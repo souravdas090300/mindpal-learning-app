@@ -11,14 +11,16 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  password  String?    // Optional for OAuth users
-  name      String?
-  avatar    String?
-  googleId  String?    @unique
-  createdAt DateTime   @default(now())
-  documents Document[]
+  id               String     @id @default(cuid())
+  email            String     @unique
+  password         String?    // Optional for OAuth users
+  name             String?
+  avatar           String?
+  googleId         String?    @unique @map("google_id")
+  resetToken       String?    @map("reset_token") // Password reset token
+  resetTokenExpiry DateTime?  @map("reset_token_expiry") // Token expiration time
+  createdAt        DateTime   @default(now()) @map("created_at")
+  documents        Document[]
 
   @@map("users")
 }
@@ -28,10 +30,10 @@ model Document {
   title      String
   content    String
   summary    String?
-  userId     String
+  userId     String      @map("user_id")
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   flashcards Flashcard[]
-  createdAt  DateTime    @default(now())
+  createdAt  DateTime    @default(now()) @map("created_at")
 
   @@map("documents")
 }
@@ -40,13 +42,26 @@ model Flashcard {
   id          String   @id @default(cuid())
   question    String
   answer      String
-  documentId  String
+  documentId  String   @map("document_id")
   document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  nextReview  DateTime @default(now())
+  nextReview  DateTime @default(now()) @map("next_review")
   interval    Int      @default(1) // days until next review
-  easeFactor  Float    @default(2.5) // SM-2 algorithm ease factor
-  reviewCount Int      @default(0)
-  createdAt   DateTime @default(now())
+  easeFactor  Float    @default(2.5) @map("ease_factor") // SM-2 algorithm ease factor
+  reviewCount Int      @default(0) @map("review_count")
+  createdAt   DateTime @default(now()) @map("created_at")
 
   @@map("flashcards")
+}
+
+model StudyRoom {
+  id               String   @id @default(cuid())
+  name             String
+  description      String?
+  creatorId        String   @map("creator_id")
+  isPublic         Boolean  @default(true) @map("is_public")
+  maxParticipants  Int?     @map("max_participants")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("study_rooms")
 }

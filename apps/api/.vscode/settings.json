@@ -1,0 +1,13 @@
+{
+  "jest.disabledWorkspaceFolders": ["apps/api"],
+  "jest.jestCommandLine": "npm test --",
+  "jest.autoRun": "off",
+  "jest.enable": false,
+  "jest.runMode": "on-demand",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.validate.enable": true,
+  "javascript.validate.enable": false,
+  "files.exclude": {
+    "**/__tests__/**/*.test.ts": false
+  }
+}

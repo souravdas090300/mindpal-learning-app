@@ -13,13 +13,13 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://your-railway-api-url.up.railway.app"
+        "EXPO_PUBLIC_API_URL": "https://your-api-url.onrender.com"
       }
     },
     "production": {
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://your-railway-api-url.up.railway.app"
+        "EXPO_PUBLIC_API_URL": "https://your-api-url.onrender.com"
       }
     }
   },

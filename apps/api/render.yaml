@@ -1,0 +1,28 @@
+# Render.com Configuration
+# Place this file at: apps/api/render.yaml
+
+services:
+  - type: web
+    name: mindpal-api
+    runtime: node
+    region: oregon  # Change to your preferred region
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DATABASE_URL
+        sync: false  # Set manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+    autoDeploy: true

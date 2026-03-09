@@ -4,7 +4,7 @@ module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
   testMatch: ['**/__tests__/**/*.test.ts', '**/?(*.)+(spec|test).ts'],
-  testPathIgnorePatterns: ['/node_modules/', 'setup.ts'],
+  testPathIgnorePatterns: ['/node_modules/', 'setup.ts', '/test/'],
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
@@ -16,8 +16,16 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
-  moduleFileExtensions: ['ts', 'js', 'json'],
+  moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
   testTimeout: 10000,
   verbose: true,
+  transformIgnorePatterns: [
+    '/node_modules/(?!@prisma)',
+  ],
+  globals: {
+    'ts-jest': {
+      isolatedModules: true,
+    },
+  },
 };

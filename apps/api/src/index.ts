@@ -23,6 +23,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import { createServer } from 'http';
 import passport from './lib/passport';
 import authRoutes from './routes/auth';
 import documentRoutes from './routes/documents';
@@ -34,7 +35,9 @@ import aiProviderRoutes from './routes/ai-providers';
 import analyticsRoutes from './routes/analytics';
 import sharingRoutes from './routes/sharing';
 import googleAuthRoutes from './routes/google-auth';
+import studyRoomsRoutes from './routes/study-rooms';
 import { prisma } from './lib/prisma';
+import { initializeSocketIO } from './lib/socket';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -260,24 +263,44 @@ app.use('/api/analytics', analyticsRoutes);
  */
 app.use('/api/sharing', sharingRoutes);
 
+/**
+ * Study Rooms Routes (/api/study-rooms)
+ * - GET / - Get all study rooms
+ * - GET /:id - Get specific study room
+ * - POST / - Create new study room
+ * - PUT /:id - Update study room
+ * - DELETE /:id - Delete study room
+ * Real-time chat handled via Socket.IO (see lib/socket.ts)
+ */
+app.use('/api/study-rooms', studyRoomsRoutes);
+
 app.use('/api/test-ai', testAIRoutes);
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
-});
+// ============================================================================
+// SERVER INITIALIZATION WITH SOCKET.IO
+// ============================================================================
 
-// Error handler
+// Create HTTP server
+const httpServer = createServer(app);
+
+// Initialize Socket.IO for real-time study rooms
+initializeSocketIO(httpServer);
+
+// Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error('Server error:', err);
   res.status(500).json({ error: 'Internal server error' });
 });
 
 // Start server
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📱 API URL: http://localhost:${PORT}`);
-  console.log(`� Health check: http://localhost:${PORT}/api/health`);
+  console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
   console.log(`📍 Test endpoint: http://localhost:${PORT}/api/test`);
+  console.log(`🔌 Socket.IO enabled for study rooms`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
+
+// Export app for testing
+export default app;

@@ -82,7 +82,7 @@ describe('Validation Utilities', () => {
       content: 'Content',
     };
     
-    const hasRequiredFields = formData.title && formData.content;
+    const hasRequiredFields = !!(formData.title && formData.content);
     expect(hasRequiredFields).toBe(true);
   });
 });

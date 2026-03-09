@@ -23,6 +23,7 @@ console.log('🤖 AI Providers Status:');
 console.log('  - Gemini:', process.env.GOOGLE_API_KEY ? '✅' : '❌');
 console.log('  - OpenAI:', process.env.OPENAI_API_KEY ? '✅' : '❌');
 console.log('  - Claude:', process.env.ANTHROPIC_API_KEY ? '✅' : '❌');
+console.log('  - DeepSeek:', process.env.DEEPSEEK_API_KEY ? '✅' : '❌');
 
 /**
  * Default AI provider (Gemini for backward compatibility)
